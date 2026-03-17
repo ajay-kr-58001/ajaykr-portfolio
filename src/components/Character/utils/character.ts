@@ -51,10 +51,15 @@ const setCharacter = (
               }
             });
             // Center the model around the origin so it appears centered in the viewport.
+            // This is useful when the GLB is not authored around the world origin.
+            character.updateWorldMatrix(true, true);
             const box = new THREE.Box3().setFromObject(character);
             const center = box.getCenter(new THREE.Vector3());
             character.position.x -= center.x;
             character.position.z -= center.z;
+
+            // Ensure the camera points at the model center
+            camera.lookAt(0, 0, 0);
 
             resolve(gltf);
             setCharTimeline(character, camera);
