@@ -50,6 +50,12 @@ const setCharacter = (
                 mesh.frustumCulled = true;
               }
             });
+            // Center the model around the origin so it appears centered in the viewport.
+            const box = new THREE.Box3().setFromObject(character);
+            const center = box.getCenter(new THREE.Vector3());
+            character.position.x -= center.x;
+            character.position.z -= center.z;
+
             resolve(gltf);
             setCharTimeline(character, camera);
             setAllTimeline();
