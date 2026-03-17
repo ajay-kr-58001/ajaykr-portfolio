@@ -50,6 +50,18 @@ const setCharacter = (
                 mesh.frustumCulled = true;
               }
             });
+            // Center the model so it appears in the middle of the view.
+            const box = new THREE.Box3().setFromObject(character);
+            const center = box.getCenter(new THREE.Vector3());
+            character.position.sub(center);
+
+            // Optionally keep the feet on the ground plane
+            const minY = box.min.y;
+            character.position.y -= minY;
+
+            // Ensure the camera is looking at the new center.
+            camera.lookAt(0, 0, 0);
+
             resolve(gltf);
             setCharTimeline(character, camera);
             setAllTimeline();
